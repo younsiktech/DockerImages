@@ -15,7 +15,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - {DATA_PATH}}/mysql:/var/lib/mysql
+      - {DATA_PATH}/mysql:/var/lib/mysql
   redis:
     container_name: redis
     image: redis:alpine
