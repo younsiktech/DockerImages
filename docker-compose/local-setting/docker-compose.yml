@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {ROOT_PASSWORD}
+      TZ: Asia/Seoul
+    ports:
+      - "3306:3306"
+    volumes:
+      - {DATA_PATH}}/mysql:/var/lib/mysql
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - {DATA_PATH}/redis:/data
+    entrypoint: redis-server --appendonly yes
+  redis-commander:
+    container_name: redis-commander
+    depends_on:
+      - redis
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "18081:8081"
